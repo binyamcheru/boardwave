@@ -1,8 +1,10 @@
 import express, { type Express } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { getJwtSecret } from './lib/jwt.js';
 
 dotenv.config();
+getJwtSecret();
 
 const app: Express = express();
 const PORT = Number(process.env.PORT) || 3000;
