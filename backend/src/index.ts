@@ -2,6 +2,7 @@ import express, { type Express } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.route.ts';
+import roomRoutes from './routes/rooms.routes.ts';
 import { getJwtSecret } from './lib/jwt.js';
 import { verifyMailTransport } from './lib/mail.js';
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
 app.use('/api/auth', authRoutes);
+app.use('/api/rooms', roomRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
