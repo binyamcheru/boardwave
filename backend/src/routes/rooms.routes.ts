@@ -2,6 +2,7 @@ import { Router, type Response } from 'express';
 import crypto from 'crypto';
 import {prisma} from '../db.js';
 import { authenticateToken, type AuthRequest } from '../middleware/auth.middleware.js';
+import { getLivePresenceByCode } from '../wsHandler.js';
 
 const router = Router();
 
@@ -51,7 +52,9 @@ router.get('/', authenticateToken, async (req: AuthRequest, res: Response): Prom
       orderBy: { updatedAt: 'desc' },
     });
 
+    const liveByCode = getLivePresenceByCode();
     const decorated = rooms.map((room: (typeof rooms)[number]) => {
+      const liveParticipants = liveByCode[room.code] ?? [];
       const boardUpdatedAt = room.board?.updatedAt ? new Date(room.board.updatedAt).getTime() : 0;
       const roomUpdatedAt = new Date(room.updatedAt).getTime();
       const lastActivityAt = new Date(Math.max(boardUpdatedAt, roomUpdatedAt)).toISOString();
@@ -61,6 +64,9 @@ router.get('/', authenticateToken, async (req: AuthRequest, res: Response): Prom
         code: room.code,
         title: room.title,
         updatedAt: lastActivityAt,
+        isLive: liveParticipants.length > 0,
+        liveCount: liveParticipants.length,
+        liveParticipants,
         members: room.members,
         owner: room.owner,
       };

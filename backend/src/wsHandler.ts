@@ -391,3 +391,34 @@ export function setupWebSocketServer(httpServer: HttpServer) {
 
   return wss;
 }
+
+export interface LiveParticipant {
+  id: string;
+  name: string;
+  avatarUrl: string;
+}
+
+export function getLivePresenceByCode(): Record<string, LiveParticipant[]> {
+  const result: Record<string, LiveParticipant[]> = {};
+
+  rooms.forEach((clients, code) => {
+    const seen = new Set<string>();
+    const people: LiveParticipant[] = [];
+
+    clients.forEach((client) => {
+      if (seen.has(client.accountUserId)) return;
+      seen.add(client.accountUserId);
+      people.push({
+        id: client.accountUserId,
+        name: client.displayName,
+        avatarUrl: client.avatarUrl,
+      });
+    });
+
+    if (people.length > 0) {
+      result[code] = people;
+    }
+  });
+
+  return result;
+}
