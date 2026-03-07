@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-all-button: #ffdc45;
+  --color-all-button-hover: #ffe675;
+  --font-sans: "DM Sans", sans-serif;
+  --font-display: "Manrope", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #061526;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #061526;
+  color: #f4f8fc;
+  font-family: "DM Sans", sans-serif;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  outline-color: #51a9ff;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: #276ca8;
+  color: #ffffff;
+}
