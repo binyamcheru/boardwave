@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { Login } from './auth/Login';
 import { Register } from './auth/Register';
+import { VerifyEmail } from './auth/VerifyEmail';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
           {/* Public Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/login" replace />} />
