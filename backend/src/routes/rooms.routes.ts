@@ -42,7 +42,7 @@ router.get('/', authenticateToken, async (req: AuthRequest, res: Response): Prom
       where: whereClause,
       include: {
         owner: { select: { id: true, name: true, avatarUrl: true } },
-        board: { select: { updatedAt: true } },
+        board: { select: { thumbnail: true, updatedAt: true } },
         members: {
           include: {
             user: { select: { id: true, name: true, avatarUrl: true } },
@@ -64,6 +64,7 @@ router.get('/', authenticateToken, async (req: AuthRequest, res: Response): Prom
         code: room.code,
         title: room.title,
         updatedAt: lastActivityAt,
+        thumbnail: room.board?.thumbnail ?? null,
         isLive: liveParticipants.length > 0,
         liveCount: liveParticipants.length,
         liveParticipants,
@@ -151,6 +152,65 @@ router.post('/join', authenticateToken, async (req: AuthRequest, res: Response):
   } catch (error) {
     console.error('Join room error:', error);
     res.status(500).json({ error: 'Failed to join room' });
+  }
+});
+
+function isAllowedThumbnail(value: string): boolean {
+  return (
+    (value.startsWith('data:image/jpeg;base64,') || value.startsWith('data:image/png;base64,')) &&
+    value.length <= 350_000
+  );
+}
+
+router.patch('/:roomId/thumbnail', authenticateToken, async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user?.userId;
+    const { roomId } = req.params;
+    const thumbnail = typeof req.body?.thumbnail === 'string' ? req.body.thumbnail : '';
+
+    if (!userId || !roomId) {
+      res.status(401).json({ error: 'Unauthorized' });
+      return;
+    }
+
+    if (!isAllowedThumbnail(thumbnail)) {
+      res.status(400).json({ error: 'Invalid board thumbnail' });
+      return;
+    }
+
+    const existingRoom = await prisma.room.findFirst({
+      where: { OR: [{ id: roomId }, { code: roomId }] },
+      include: { members: true },
+    });
+
+    if (!existingRoom) {
+      res.status(404).json({ error: 'Room not found' });
+      return;
+    }
+
+    const isMember =
+      existingRoom.ownerId === userId ||
+      existingRoom.members.some((member: { userId: string }) => member.userId === userId);
+
+    if (!isMember) {
+      res.status(403).json({ error: 'You do not have permission to update this room' });
+      return;
+    }
+
+    await prisma.board.upsert({
+      where: { roomId: existingRoom.id },
+      create: {
+        roomId: existingRoom.id,
+        canvasData: [],
+        thumbnail,
+      },
+      update: { thumbnail },
+    });
+
+    res.json({ ok: true });
+  } catch (error) {
+    console.error('Update thumbnail error:', error);
+    res.status(500).json({ error: 'Failed to save thumbnail' });
   }
 });
 
