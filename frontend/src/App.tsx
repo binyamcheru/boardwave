@@ -1,3 +1,4 @@
+import { LazyMotion } from 'framer-motion';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { Login } from './auth/Login';
@@ -8,9 +9,10 @@ import ResetPassword from './auth/ResetPassword';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
+    <LazyMotion features={() => import('./motionFeatures').then((module) => module.default)} strict>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
           {/* Public Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -20,8 +22,9 @@ export default function App() {
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </LazyMotion>
   );
 }

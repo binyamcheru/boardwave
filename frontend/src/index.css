@@ -162,6 +162,38 @@ a {
   color: #8bc7ff;
 }
 
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(2, 10, 20, 0.78);
+  backdrop-filter: blur(3px);
+}
+
+.dialog-panel {
+  width: 100%;
+  max-width: 448px;
+  border: 1px solid #315475;
+  border-radius: 8px;
+  background: #0b2540;
+  padding: 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+}
+
+.auth-panel .text-\[\#172033\],
+.dialog-panel .text-\[\#172033\] {
+  color: #f4f8fc;
+}
+
+.auth-panel .text-\[\#667085\],
+.dialog-panel .text-\[\#667085\] {
+  color: #aebed4;
+}
+
 @media (max-width: 520px) {
   .auth-page {
     align-items: flex-start;
