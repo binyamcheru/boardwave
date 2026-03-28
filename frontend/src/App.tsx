@@ -9,6 +9,7 @@ import { VerifyEmail } from './auth/VerifyEmail';
 import { ForgotPassword } from './auth/ForgotPassword';
 import { Dashboard } from './dashboard/Dashboard';
 import ResetPassword from './auth/ResetPassword';
+import { RoomPage } from './room/RoomPage';
 
 const ProtectedRoute: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -49,6 +50,7 @@ export default function App() {
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/room/:roomId" element={<RoomPage />} />
           </Route>
 
           {/* Fallback */}
