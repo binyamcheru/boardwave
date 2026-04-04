@@ -3,6 +3,7 @@ import { LazyMotion } from 'framer-motion';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { Oval } from 'react-loader-spinner';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import  HomePage  from './homepage/HomePage';
 import { Login } from './auth/Login';
 import { Register } from './auth/Register';
 import { VerifyEmail } from './auth/VerifyEmail';
@@ -40,6 +41,9 @@ export default function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
+          {/* Public Landing Page */}
+          <Route path="/" element={<HomePage />} />
+
           {/* Public Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -54,7 +58,7 @@ export default function App() {
           </Route>
 
           {/* Fallback */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
