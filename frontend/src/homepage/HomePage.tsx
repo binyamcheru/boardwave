@@ -3,8 +3,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { CreateRoomModal } from "../dashboard/CreateRoomModal";
 import { JoinRoomModal } from "../dashboard/JoinRoomModal";
+import { Reveal } from "./Reveal";
+import Features from "./hero/Features";
 import Footer from "./hero/Footer";
 import Hero from "./hero/Hero";
+import HowItWorks from "./hero/HowItWorks";
+import ProblemSolution from "./hero/ProblemSolution";
 import Navbar from "./navbar/Navbar";
 
 const HomePage = () => {
@@ -45,6 +49,9 @@ const HomePage = () => {
           onCreateRoom={() => requireAuthThen("create")}
           onJoinRoom={() => requireAuthThen("join")}
         />
+        <Reveal><ProblemSolution /></Reveal>
+        <Reveal><Features /></Reveal>
+        <Reveal><HowItWorks /></Reveal>
       </main>
       <Footer />
 
