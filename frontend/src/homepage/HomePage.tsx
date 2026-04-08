@@ -5,10 +5,13 @@ import { CreateRoomModal } from "../dashboard/CreateRoomModal";
 import { JoinRoomModal } from "../dashboard/JoinRoomModal";
 import { Reveal } from "./Reveal";
 import Features from "./hero/Features";
+import FinalCta from "./hero/FinalCta";
 import Footer from "./hero/Footer";
 import Hero from "./hero/Hero";
 import HowItWorks from "./hero/HowItWorks";
 import ProblemSolution from "./hero/ProblemSolution";
+import Security from "./hero/Security";
+import UseCases from "./hero/UseCases";
 import Navbar from "./navbar/Navbar";
 
 const HomePage = () => {
@@ -52,6 +55,14 @@ const HomePage = () => {
         <Reveal><ProblemSolution /></Reveal>
         <Reveal><Features /></Reveal>
         <Reveal><HowItWorks /></Reveal>
+        <Reveal><UseCases /></Reveal>
+        <Reveal><Security /></Reveal>
+        <Reveal>
+          <FinalCta
+            onCreateRoom={() => requireAuthThen("create")}
+            onJoinRoom={() => requireAuthThen("join")}
+          />
+        </Reveal>
       </main>
       <Footer />
 
